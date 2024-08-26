@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <button id="new-entry"><img src="https://raw.githubusercontent.com/razvanpf/Images/main/plusicon.png" alt="New Entry"></button>
+        <button id="delete-entry"><img src="https://raw.githubusercontent.com/razvanpf/Images/main/minusbutton.png" alt="Delete Entry"></button>
+        <button id="save-storage"><img src="https://raw.githubusercontent.com/razvanpf/Images/main/saveicon.png" alt="Save"></button>
+        <button id="clear-storage"><img src="https://raw.githubusercontent.com/razvanpf/Images/main/clearicn.png" alt="Clear"></button>
+        <button id="help" class="help-btn"><img src="https://raw.githubusercontent.com/razvanpf/Images/main/helpimage.png" alt="Help"></button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div id="main-content">
+        <div id="entry-list">
+            <!-- Entries will be dynamically added here -->
+        </div>
+            <!-- Placeholder for no entries -->
+        <div id="no-entry-placeholder" style="display: none; text-align: center; font-size: 24px; color: gray;">
+            No entry found
+        </div>
+    </div>
+
+    <!-- Popup for Entry -->
+    <div id="entry-popup" class="hidden">
+        <div id="popup-header">
+            <div class="dropdown">
+                <button id="weather-dropdown">Weather: <span id="weather-selection"></span></button>
+                <div class="dropdown-content">
+                    <select id="weather-select">
+                        <option value="">Select Temperature</option>
+                        <!-- Options for -30 to 45 degrees Celsius will be populated by JS -->
+                    </select>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button id="mood-dropdown">Mood: <span id="mood-selection"></span></button>
+                <div class="dropdown-content">
+                    <select id="mood-select">
+                        <option value="">Select Mood</option>
+                        <option value="sad">😢 Sad</option>
+                        <option value="neutral">😐 Neutral</option>
+                        <option value="happy">😊 Happy</option>
+                        <option value="freezing">🥶 Freezing</option>
+                        <option value="melting">🥵 Melting</option>
+                        <option value="drunk">🍻 Drunk</option>
+                        <option value="sick">🤢 Sick</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button id="location-dropdown">Location: <span id="location-selection"></span></button>
+                <div class="dropdown-content">
+                    <input type="text" id="location-input" placeholder="Enter your location" maxlength="33">
+                </div>
+            </div>
+            <div class="dropdown">
+                <button id="date-dropdown">Date: <span id="date-selection"></span></button>
+                <input type="date" id="date-picker" class="hidden">
+            </div>
+            <button id="edit-entry">Edit</button>
+            <button id="close-popup">X</button>
+        </div>
+        <div id="popup-body">
+            <input type="text" id="entry-title" value="New Entry" disabled>
+            <div id="entry-text" contenteditable="true" placeholder="Write your journal entry here..." disabled></div>
+        </div>
+        <div id="popup-footer">
+            <button id="bold-tool" class="text-tool" disabled><b>B</b></button>
+            <button id="italic-tool" class="text-tool" disabled><i>I</i></button>
+            <button id="underline-tool" class="text-tool" disabled><u>U</u></button>
+            <label for="font-size-tool">Size:</label>
+            <select id="font-size-tool" disabled>
+                <option value="12px">12px</option>
+                <option value="14px">14px</option>
+                <option value="16px" selected>16px</option>
+                <option value="18px">18px</option>
+                <option value="20px">20px</option>
+                <option value="24px">24px</option>
+                <option value="28px">28px</option>
+                <option value="32px">32px</option>
+            </select>
+            <label for="font-family-tool">Font:</label>
+            <select id="font-family-tool" disabled>
+                <option value="Arial" selected>Arial</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+                <option value="Impact">Impact</option>
+                <option value="Comic Sans MS">Comic Sans MS</option>
+            </select>
+            <button id="insert-url" class="text-tool" disabled>🔗</button>
+            <button class="text-tool add-image-btn" disabled><img src="https://raw.githubusercontent.com/razvanpf/Images/main/imgplaceholder.jpg" alt="Add Image"></button>
+            <button id="save-entry-popup" style="margin-left: auto;">Save</button>
+        </div>
+    </div>
+
+    <!-- Link Editor for text Hyperlink-->
+    <div id="linkEditorPopup" style="display: none; position: absolute; z-index: 1000; background: white; padding: 10px; border: 1px solid #ccc;">
+        <label for="displayText">Text:</label>
+        <input type="text" id="displayText" style="width: 100%;">
+        <label for="urlInputField">URL:</label>
+        <input type="text" id="urlInputField" style="width: 100%;" placeholder="https://example.com">
+        <button onclick="applyCustomLink()">Apply</button>
+        <button onclick="closeCustomUrlInput()">Cancel</button>
+    </div>
+
+    <!-- Delete Confirmation Popup -->
+    <div id="delete-popup" class="hidden">
+        <div id="delete-popup-body">
+            <p>Are you sure you want to delete this entry?</p>
+            <div id="delete-popup-buttons">
+                <button id="confirm-delete" class="delete-btn red-btn">Confirm</button>
+                <button id="cancel-delete" class="delete-btn blue-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clear Storage Confirmation Popup -->
+    <div id="clear-storage-popup" class="hidden">
+        <p>Are you sure you want to clear saved data? This will also clear all existing entries.</p>
+        <div>
+            <button id="confirm-clear">Confirm</button>
+            <button id="cancel-clear">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Help Popup -->
+    <div id="instructionPopup" class="popup hidden">
+        <div class="popup-content">
+            <h2>Welcome to Journey App!</h2>
+            <p>Journey App is your personal digital journal designed to help you log and manage your life experiences with ease. You can personalize entries with text formatting and images. Each entry allows you to document your mood, weather, location, and date, providing a comprehensive snapshot of your day. The app supports saving your entries, so your memories are preserved just the way you left them. Whether you want to reflect on your past or plan your future, Journey App is the perfect companion to document your life's journey.</p>
+            <h3>Instructions:</h3>
+            <ul id="iconedlist">
+                <li><img src="https://raw.githubusercontent.com/razvanpf/Images/main/plusicon.png" alt="Plus" class="icon"> Adds a new journal entry you can edit.</li>
+                <li><img src="https://raw.githubusercontent.com/razvanpf/Images/main/minusbutton.png" alt="Remove" class="icon"> Toggles remove mode. Click on any entry with it toggled on to remove the entry.</li>
+                <li><img src="https://raw.githubusercontent.com/razvanpf/Images/main/saveicon.png" alt="Grid" class="icon"> Saves current entry list so you can find everything as you left it upon return.</li>
+                <li><img src="https://raw.githubusercontent.com/razvanpf/Images/main/clearicn.png" alt="Grid" class="icon"> Clears all entries and all save data so you can start from scratch.</li>
+                <li id="additional-note"><strong>Note:</strong> By disabling content editing inside the entry, you can the added URLs by clicking on them.</li>
+            </ul>
+            <button id="closePopupButton" class="close-popup-button">I got it</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
