@@ -507,6 +507,7 @@ function displayCoverImage(file) {
             coverImageElement.style.display = 'block'; // Makes image is visible when added
             document.getElementById('popup-body').insertBefore(coverImageElement, document.getElementById('entry-text'));
         }
+            coverImageElement.style.cursor = 'pointer'; // Optional: change cursor to indicate scrollable
 
         // Update the current entry's image in the DOM and entries array
         if (currentEntry !== null) {
