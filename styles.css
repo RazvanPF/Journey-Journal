@@ -266,7 +266,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 #save-entry-popup{
-    margin-right: 20px;
+    margin-right: 35px;
     background-color: #4CAF50;
     color: white; 
     border: none; 
@@ -677,7 +677,7 @@ label[for="font-family-tool"] {
     cursor: pointer;
 }
 
-/* Add some style to the dropdown container for better alignment */
+/* Dropdown container for better alignment */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -728,4 +728,108 @@ label[for="font-family-tool"] {
 #weather-dropdown, #mood-dropdown, #location-dropdown {
     width: 200px; 
     
+}
+
+/* Alignment mini popup */
+#alignPopup {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 10011;
+    width: 150px;
+    height: 50px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+#alignPopup.hidden {
+    display: none;
+}
+
+#alignPopup button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+#alignPopup button img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Bullet points / Numbered List buttons */
+.text-tool {
+    padding: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+#bullet-list-tool{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+.text-tool:hover {
+    background-color: #e0e0e0;
+}
+
+#entry-text ul, #entry-text ol {
+    padding-left: 40px; 
+    list-style-position: outside; 
+}
+
+#entry-text ul {
+    list-style-type: disc; 
+}
+
+#entry-text ol {
+    list-style-type: decimal; 
+}
+
+#entry-text li {
+    color: black; 
+    font-size: 16px; 
+}
+
+/* Emoji syling */
+#emoji-picker {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    width: 200px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10010;
+}
+
+#emoji-picker.hidden {
+    display: none;
+}
+
+.emoji {
+    cursor: pointer;
+    font-size: 24px;
+    transition: transform 0.1s ease;
+}
+
+.emoji:hover {
+    transform: scale(1.2);
+}
+
+#emoji-btn[disabled] {
+    background-color: #808080;
+    color: #a0a0a0;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
 }

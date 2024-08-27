@@ -16,6 +16,8 @@ let selectedImageFile = null;
 let coverImageElement = null; 
 let selectedRange; 
 let entries = []; 
+let colorPickerOpen = false;
+let colorInput;
 
 // Event listeners to open and close the popup
 newEntryButton.addEventListener('click', addNewEntry);
@@ -200,12 +202,15 @@ function updateEntry(entryIndex) {
     const strippedText = entryData.text.replace(/<\/?[^>]+(>|$)/g, "");
 
     entryElement.querySelector('.entry-title').textContent = entryData.title;
-    entryElement.querySelector('.entry-preview').textContent = strippedText.length > 60 ? strippedText.substring(0, 60) + '...' : strippedText;
     // Add some emojis to weather/location/date
     entryElement.querySelector('.mood').textContent = getMoodEmoji(entryData.mood);
     entryElement.querySelector('.weather').textContent = entryData.weather ? `⛅ ${entryData.weather}°C` : '';
     entryElement.querySelector('.location').textContent = entryData.location ? `📍 ${entryData.location}` : '';
     entryElement.querySelector('.date').textContent = entryData.date ? `📅 ${formatDateToDDMMYYYY(entryData.date)}` : '';
+
+    // Update the preview text after saving the entry
+    updateEntryPreview(entryData, entryIndex);
+
 }
 
 // Get emoji for mood
@@ -824,6 +829,7 @@ function loadFromLocalStorage() {
             });
 
             entryList.appendChild(newEntryElement);
+            updateEntryPreview(entryData, index);
         });
         toggleNoEntryPlaceholder();
     }
@@ -888,3 +894,218 @@ function formatDateToDDMMYYYY(dateString) {
     const [year, month, day] = dateString.split('-');
     return `${day}-${month}-${year}`;
 }
+
+// Event listener for the color picker
+document.getElementById('color-tool').addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent default to maintain focus
+    saveSelection();
+
+    // Check if the color picker already exists and remove it if it does
+    let existingColorInput = document.getElementById('custom-color-picker');
+    if (existingColorInput) {
+        document.body.removeChild(existingColorInput);
+        return; // If it existed, it was just removed, so exit here
+    }
+
+    // Create a color input dynamically
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.id = 'custom-color-picker'; // Assign an ID to the color picker
+    colorInput.style.position = 'absolute';
+    colorInput.style.zIndex = '10009'; // Ensure it's above other elements
+    colorInput.style.opacity = '0'; // Hide the actual input but trigger its event
+
+    // Position the color input above the button
+    const buttonRect = this.getBoundingClientRect();
+    colorInput.style.left = `${buttonRect.left + window.scrollX}px`;
+    colorInput.style.top = `${buttonRect.top + window.scrollY - colorInput.offsetHeight}px`;
+
+    document.body.appendChild(colorInput);
+    colorInput.focus();  // Make sure the color input gets focus
+
+    // After the user releases the color picker, apply the color
+    colorInput.addEventListener('input', function() {
+        colorInput.style.opacity = '1'; // Show the color picker
+    });
+
+    // After the color is changed and the user releases, apply the color
+    colorInput.addEventListener('change', function() {
+        restoreSelection(); // Restore the text selection
+        executeCommand('foreColor', colorInput.value);
+        document.body.removeChild(colorInput); // Remove color picker after applying color
+    });
+
+    // Close the color picker when clicking outside
+    document.addEventListener('click', function handleClickOutside(event) {
+        if (!colorInput.contains(event.target) && event.target !== colorInput) {
+            document.body.removeChild(colorInput);
+            document.removeEventListener('click', handleClickOutside); // Remove the event listener once done
+        }
+    }, { once: true });
+
+    // Trigger the color input click to open the color picker
+    colorInput.click();
+});
+
+// Alignment Popup
+document.getElementById('align-tool').addEventListener('click', function (e) {
+    e.preventDefault(); // Prevent default behavior
+    saveSelection(); // Save the current text selection
+
+    const alignPopup = document.getElementById('alignPopup');
+
+    // Position the alignPopup above and slightly to the left of the button
+    const buttonRect = this.getBoundingClientRect();
+    alignPopup.style.left = `${buttonRect.left + window.scrollX - 60}px`; // Adjusted to the left
+    alignPopup.style.top = `${buttonRect.top + window.scrollY - alignPopup.offsetHeight - 50}px`; // Adjusted higher
+
+    // Toggle the visibility of the popup
+    alignPopup.classList.toggle('hidden');
+});
+
+document.getElementById('left-align').addEventListener('click', function () {
+    restoreSelection();
+    document.execCommand('justifyLeft', false, null);
+    document.getElementById('alignPopup').classList.add('hidden'); // Hide the popup after selection
+});
+
+document.getElementById('center-align').addEventListener('click', function () {
+    restoreSelection();
+    document.execCommand('justifyCenter', false, null);
+    document.getElementById('alignPopup').classList.add('hidden'); // Hide the popup after selection
+});
+
+document.getElementById('right-align').addEventListener('click', function () {
+    restoreSelection();
+    document.execCommand('justifyRight', false, null);
+    document.getElementById('alignPopup').classList.add('hidden'); // Hide the popup after selection
+});
+
+// Bullet Points & Numbered List buttons //
+
+// Bullet List Button
+document.getElementById('bullet-list-tool').addEventListener('click', function (e) {
+    e.preventDefault(); // Prevent default to maintain focus
+    saveSelection(); // Save the current selection
+
+    // Toggle bullet list on the selected text or current line
+    document.execCommand('insertUnorderedList', false, null);
+
+    // Restore the selection after applying the command
+    restoreSelection();
+});
+
+// Numbered List Button
+document.getElementById('numbered-list-tool').addEventListener('click', function (e) {
+    e.preventDefault(); // Prevent default to maintain focus
+    saveSelection(); // Save the current selection
+
+    // Toggle numbered list on the selected text or current line
+    document.execCommand('insertOrderedList', false, null);
+
+    // Restore the selection after applying the command
+    restoreSelection();
+});
+
+// TAB KEYBOARD FUNCTIONALITY WHILE EDITING TEXT AREA //
+document.getElementById('entry-text').addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+        e.preventDefault(); // Prevent the default tab behavior
+        
+        // Insert tab space (you can customize the space as needed)
+        document.execCommand('insertText', false, '    '); // Inserting 4 spaces
+    }
+});
+
+// Update the preview text (REMOVE HTML TAGS AND STUFF LIKE THAT)
+function updateEntryPreview(entryData, entryIndex) {
+    const entryElement = entryList.children[entryIndex];
+    if (!entryElement) return;
+
+    // Create a temporary element to parse and extract text content with line breaks
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = entryData.text;
+
+    // Convert <p>, <div>, and <br> tags to newline characters
+    let previewText = tempDiv.innerHTML
+        .replace(/<\/p>|<\/div>/gi, '\n')
+        .replace(/<p>|<div>/gi, '') // Handles paragraphs created by ENTER key
+        .replace(/<br\s*\/?>/gi, '\n') // Handles line breaks created by SHIFT + ENTER
+        .replace(/&nbsp;/g, " "); // Replace non-breaking spaces with actual spaces
+
+    // Remove any remaining HTML tags
+    previewText = previewText.replace(/<\/?[^>]+(>|$)/g, "");
+
+    // Update the preview text with the extracted content
+    entryElement.querySelector('.entry-preview').textContent = previewText.length > 60 ? previewText.substring(0, 60) + '...' : previewText;
+}
+
+// EMOJI KEYBOARD
+
+document.addEventListener('DOMContentLoaded', () => {
+    const emojiBtn = document.getElementById('emoji-btn');
+    const emojiPicker = document.getElementById('emoji-picker');
+    const entryTextDiv = document.getElementById('entry-text');
+    
+    let currentSelection; // To store the current cursor position
+
+    // Save the cursor position when the text area is focused or clicked
+    entryTextDiv.addEventListener('mouseup', saveSelection);
+    entryTextDiv.addEventListener('keyup', saveSelection);
+
+    function saveSelection() {
+        if (window.getSelection) {
+            currentSelection = window.getSelection().getRangeAt(0);
+        }
+    }
+
+    // Toggle emoji picker visibility
+    emojiBtn.addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent any default actions
+        const rect = emojiBtn.getBoundingClientRect();
+        
+        // Calculate the position above the button
+        const pickerHeight = emojiPicker.offsetHeight;
+        const topPosition = rect.top + window.scrollY - pickerHeight - 170; 
+        const leftPosition = rect.left + window.scrollX - 90;
+
+        // Apply the calculated positions
+        emojiPicker.style.left = `${leftPosition}px`;
+        emojiPicker.style.top = `${topPosition}px`;
+
+        // Picker is visible within the viewport
+        if (topPosition < 0) {
+            emojiPicker.style.top = `${rect.bottom + window.scrollY + 10}px`; 
+        }
+
+        emojiPicker.classList.toggle('hidden');
+    });
+
+    // Insert emoji into the text area when clicked
+    emojiPicker.addEventListener('click', function (e) {
+        if (e.target.classList.contains('emoji')) {
+            if (currentSelection) {
+                // Restore the selection and insert the emoji at the cursor position
+                entryTextDiv.focus();
+                currentSelection.deleteContents();
+                const emojiNode = document.createTextNode(e.target.textContent);
+                currentSelection.insertNode(emojiNode);
+                
+                // Move the cursor after the inserted emoji
+                currentSelection.setStartAfter(emojiNode);
+                currentSelection.setEndAfter(emojiNode);
+                currentSelection.collapse(false);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(currentSelection);
+            }
+            emojiPicker.classList.add('hidden'); // Hide the picker after selection
+        }
+    });
+
+    // Hide the emoji picker if clicking outside
+    document.addEventListener('click', function (event) {
+        if (!emojiPicker.contains(event.target) && !emojiBtn.contains(event.target)) {
+            emojiPicker.classList.add('hidden');
+        }
+    });
+});

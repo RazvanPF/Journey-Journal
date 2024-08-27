@@ -20,7 +20,7 @@
     <!-- Main Content Area -->
     <div id="main-content">
         <div id="entry-list">
-            <!-- Entries will be dynamically added here -->
+            <!-- Entries will be dynamically added in this location -->
         </div>
             <!-- Placeholder for no entries -->
         <div id="no-entry-placeholder" style="display: none; text-align: center; font-size: 24px; color: gray;">
@@ -76,7 +76,6 @@
             <button id="bold-tool" class="text-tool" disabled><b>B</b></button>
             <button id="italic-tool" class="text-tool" disabled><i>I</i></button>
             <button id="underline-tool" class="text-tool" disabled><u>U</u></button>
-            <label for="font-size-tool">Size:</label>
             <select id="font-size-tool" disabled>
                 <option value="12px">12px</option>
                 <option value="14px">14px</option>
@@ -87,7 +86,6 @@
                 <option value="28px">28px</option>
                 <option value="32px">32px</option>
             </select>
-            <label for="font-family-tool">Font:</label>
             <select id="font-family-tool" disabled>
                 <option value="Arial" selected>Arial</option>
                 <option value="Helvetica">Helvetica</option>
@@ -100,9 +98,49 @@
                 <option value="Impact">Impact</option>
                 <option value="Comic Sans MS">Comic Sans MS</option>
             </select>
+            <button id="color-tool" class="text-tool" disabled>🎨</button>
+            <button id="align-tool" class="text-tool" disabled><img src="https://raw.githubusercontent.com/razvanpf/Images/main/AlignmentIcon.png" alt="Align Text"></button>
+            <button id="bullet-list-tool" class="text-tool">•</button>
+            <button id="numbered-list-tool" class="text-tool">1.</button>
+            <button id="emoji-btn" class="text-tool" disabled>😊</button>
+            <div id="emoji-picker-container" style="position: absolute; z-index: 10000;"></div>
             <button id="insert-url" class="text-tool" disabled>🔗</button>
             <button class="text-tool add-image-btn" disabled><img src="https://raw.githubusercontent.com/razvanpf/Images/main/imgplaceholder.jpg" alt="Add Image"></button>
             <button id="save-entry-popup" style="margin-left: auto;">Save</button>
+        </div>
+
+        <!-- Emoji Picker Container -->
+        <div id="emoji-picker" class="hidden">
+            <span class="emoji">😀</span>
+            <span class="emoji">😁</span>
+            <span class="emoji">😂</span>
+            <span class="emoji">🤣</span>
+            <span class="emoji">😃</span>
+            <span class="emoji">😄</span>
+            <span class="emoji">😅</span>
+            <span class="emoji">😆</span>
+            <span class="emoji">😉</span>
+            <span class="emoji">😊</span>
+            <span class="emoji">😍</span>
+            <span class="emoji">🥰</span>
+            <span class="emoji">😘</span>
+            <span class="emoji">😋</span>
+            <span class="emoji">😎</span>
+            <span class="emoji">🤔</span>
+            <span class="emoji">🤨</span>
+            <span class="emoji">😏</span>
+            <span class="emoji">🥳</span>
+            <span class="emoji">😜</span>
+            <span class="emoji">😭</span>
+            <span class="emoji">😢</span>
+            <span class="emoji">🥺</span>
+            <span class="emoji">😱</span>
+            <span class="emoji">🤯</span>
+            <span class="emoji">🤩</span>
+            <span class="emoji">🥵</span>
+            <span class="emoji">🥶</span>
+            <span class="emoji">🙄</span>
+            <span class="emoji">😬</span>
         </div>
     </div>
 
@@ -151,6 +189,13 @@
             </ul>
             <button id="closePopupButton" class="close-popup-button">I got it</button>
         </div>
+    </div>
+
+    <!-- Mini-popup for text alignment -->
+    <div id="alignPopup" class="popup hidden">
+        <button id="left-align"><img src="https://raw.githubusercontent.com/razvanpf/Images/main/LAlign.png" alt="Left Align"></button>
+        <button id="center-align"><img src="https://raw.githubusercontent.com/razvanpf/Images/main/CAlign.png" alt="Center Align"></button>
+        <button id="right-align"><img src="https://raw.githubusercontent.com/razvanpf/Images/main/RAlign.png" alt="Right Align"></button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
