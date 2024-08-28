@@ -1,0 +1,61 @@
+# Journey App
+
+Journey App is a personal journal application designed to help users capture and document their daily experiences, thoughts, and memories. The app allows users to create, edit, and delete journal entries while providing options to add moods, weather conditions, locations, dates, cover images, and even emojis to make each entry unique and personalized.
+
+## Features
+
+### 1. **Create and Manage Entries**
+   - Users can create new journal entries with ease.
+   - Each entry can include a title, text content, mood, weather, location, and date.
+   - Entries are displayed in a list format, allowing easy access and management.
+
+### 2. **Rich Text Editing**
+   - Entries support rich text formatting, including bold, italic, underline, bullet points, and numbered lists.
+   - Users can adjust font size and font family for text within an entry.
+   - A custom color picker allows users to change text color, providing further customization.
+   - Entries support text alignment to left/right/center.
+
+### 3. **Mood and Weather Tracking**
+   - Users can select a mood for each entry, represented by an emoji.
+   - Weather conditions can also be documented, with temperature selection available in the format of degrees Celsius.
+
+### 4. **Location and Date**
+   - Document the location where the entry is being made.
+   - Select or modify the date for each entry, helping keep the journal organized chronologically.
+
+### 5. **Cover Images**
+   - Add a cover image to each journal entry, with the ability to view it in a lightbox for an immersive experience.
+   - Cover images are also shown in the entry summary in the entry list dashboard.
+
+### 6. **Emoji Support**
+   - An emoji picker is available for users to insert emojis directly into their journal entries.
+
+### 7. **Editing and Deletion**
+   - Entries can be edited at any time, with the option to enable or disable editing mode.
+   - Deleting an entry is made secure with a confirmation prompt to prevent accidental deletions.
+
+### 8. **Data Persistence**
+   - The app automatically saves entries to local storage, ensuring that no data is lost even if the page is refreshed or closed.
+   - Users can clear all stored data with a simple action, and the app will reflect the changes immediately.
+
+### 9. **User-Friendly Interface**
+   - The app features a clean and intuitive interface, designed to provide a seamless journaling experience.
+   - Help and instructions are easily accessible within the app to guide new users.
+
+## Planned Features
+
+- **Entry Export:** Future versions may include the ability to export individual entries in various file formats such as PDF or Word.
+- **Audio/Video Attachments:** Possibility to attach and playback audio or video files within an entry.
+- **Mobile Responsiveness:** Optimizations to enhance the experience on mobile devices.
+
+## License
+
+This project is open source. Feel free to use it as you wish. 
+
+## Assets
+
+This project uses free assets from various sources. DO NOT USE ASSETS FOR COMMERCIAL PURPOSES. FOR COMMERCIAL PURPOSES PURCHASE OR DESIGN YOUR OWN ASSETS! 
+
+---
+**Developer** - Razvan Faraon **Contact**: farirazvan@gmail.com
+**Journey App** - Capture your moments, one entry at a time.
