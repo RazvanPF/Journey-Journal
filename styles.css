@@ -893,9 +893,9 @@ label[for="font-family-tool"] {
 
     /* Make footer items take more space and ensure visibility */
     #popup-footer button.text-tool, #popup-footer select {
-        flex: 1 1 45%; /* Allow buttons to take 45% width and wrap */
-        margin: 5px; /* Add margin around buttons */
-        font-size: 1.2rem; /* Slightly increase font size */
+        flex: 1 1 10%; /* Allow buttons to take 45% width and wrap */
+        margin: 2px; /* Add margin around buttons */
+        font-size: 1rem; /* Slightly increase font size */
     }
 
     /* Save button at the end */
