@@ -833,3 +833,153 @@ label[for="font-family-tool"] {
     border: 1px solid #ccc;
     cursor: not-allowed;
 }
+
+/* Media Query for screens with max width of 768px (tablets and smaller devices) */
+@media only screen and (max-width: 768px) {
+
+    /* Make the popup full screen */
+    #entry-popup {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Adjust the popup header for better spacing */
+    #popup-header {
+        flex-wrap: wrap;
+        padding: 10px;
+        gap: 10px; /* Add space between the header elements */
+    }
+
+    /* Adjust the size of buttons and dropdowns */
+    #popup-header button, 
+    #popup-header input, 
+    #popup-header select {
+        width: 100%; /* Make buttons full width */
+        font-size: 1rem; /* Adjust text size */
+        margin-bottom: 5px; /* Add some margin between items */
+    }
+
+    /* Adjust input fields */
+    #entry-title, #location-input {
+        width: 100%;
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+
+    /* Entry Text Area */
+    #entry-text {
+        flex-grow: 1; /* Make it take up remaining space */
+        font-size: 1rem;
+        overflow-y: auto;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* Adjust footer layout */
+    #popup-footer {
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap */
+        justify-content: space-between; /* Spread the items */
+        padding: 10px;
+        background-color: rgba(72, 177, 239, 0.55);
+    }
+
+    /* Make footer items take more space and ensure visibility */
+    #popup-footer button.text-tool, #popup-footer select {
+        flex: 1 1 45%; /* Allow buttons to take 45% width and wrap */
+        margin: 5px; /* Add margin around buttons */
+        font-size: 1.2rem; /* Slightly increase font size */
+    }
+
+    /* Save button at the end */
+    #save-entry-popup {
+        flex: 1 1 100%; /* Make the save button take full width */
+        margin-top: 10px;
+        margin-right: 0px;
+    }
+
+    #edit-entry {
+        padding-bottom:10px
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    /* Style the entries in the entry list for mobile */
+    .entry {
+        display: flex;
+        flex-direction: column; /* Stack content vertically for mobile */
+        align-items: flex-start; /* Align content to the left */
+        padding: 15px;
+        background-color: #f9f9f9; /* Light background */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        border-left: 4px solid #4CAF50; /* Green left border for highlighting */
+        margin-bottom: 15px; /* Add space between entries */
+    }
+
+    /* Adjust the entry header to be more readable on mobile */
+    .entry-header {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .entry-title {
+        font-size: 1.2rem; /* Slightly larger title font size */
+        font-weight: bold;
+        color: #333;
+    }
+
+    .entry-preview {
+        font-size: 1rem; /* Adjust the preview text size */
+        color: #555;
+        margin-top: 5px;
+        white-space: normal; /* Allow text to wrap on mobile */
+    }
+
+    /* Styling for the entry details */
+    .entry-details {
+        display: flex;
+        flex-wrap: wrap; /* Allow elements to wrap */
+        gap: 10px; /* Add space between items */
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .entry-details span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .entry-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px; /* Round the image corners */
+        margin-top: 10px;
+    }
+
+    .entry .entry-image {
+        margin-bottom: 0px;
+        margin-top: 10px;
+    }
+
+    #instructionPopup{
+        padding: 10px;
+    }
+
+    .popup-content p {
+        padding-right: 5px;
+        padding-left: 5px;
+        padding-top: 10px;
+        padding-bottom: 25px;
+    }
+}
